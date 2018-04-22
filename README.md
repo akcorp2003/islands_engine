@@ -1,6 +1,8 @@
 # IslandsEngine
 
-**TODO: Add description**
+## Description
+
+A repo following the game made in the book _Functional Web Development with Elixir, OTP, and Phoenix_.
 
 ## Installation
 
