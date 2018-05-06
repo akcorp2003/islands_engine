@@ -26,6 +26,22 @@ defmodule IslandsEngine.Island do
         {:error, :invalid_coordinate} -> {:halt, {:error, :invalid_coordinate}}
       end
     end
+
+    def overlaps?(existing_island, new_island), do:
+      not MapSet.disjoint?(existing_island.coordinates, new_island.coordinates)
+
+    def guess(island, coordinate) do
+      case MapSet.member?(island.coordinates, coordinate) do
+        true -> 
+          hit_coordinates = MapSet.put(island.hit_coordinates, coordinate)
+          {:hit, %{island | hit_coordinates: hit_coordinates}}
+        false -> :miss
+      end
+    end
+
+    def forested?(island), do:
+      MapSet.equal?(island.coordinates, island.hit_coordinates)
+
   
     # These are rules that define how are islands are shaped.
     # These all define how to compute offsets because players won't be saying row 0, column 0
@@ -36,5 +52,7 @@ defmodule IslandsEngine.Island do
     defp offsets(:l_shape), do: [{0, 0}, {1, 0}, {2, 0}, {2, 1}]
     defp offsets(:s_shape), do: [{0, 1}, {0, 2}, {1, 0}, {1, 1}]
     defp offsets(_), do: {:error, :invalid_island_type}
+
+    def types(), do: [:atoll, :dot, :l_shape, :s_shape, :square]
     
   end
